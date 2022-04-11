@@ -3,18 +3,33 @@
 <head>
   <title>Weight & Balance</title>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/logo-aw.png">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="" />
   <link rel="stylesheet" type="text/css" href="index.css"/>
 </head>
 <body>
-  <label for="planes">Samolot:</label>
-  <select name="planes" id="planes" autocomplete="off">
-    <option disabled selected value>wybierz</option>
-  </select>
+  <div id="app">
+    <label for="planes">Samolot:</label>
+    <select v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
+      <option disabled selected value>wybierz</option>
+      <option value="dupsko">dupa</option>
+    </select>
 
-  <div id="inputs"></div>
+    <span>{{selectedPlane}}</span>
 
-  <script type="module" src="front.js"></script>
+    <div v-for="item in czop">{{item}}</div>
+
+    <div id="inputs"></div>
+  </div>
+
+  <script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+    // import the root component App from a single-file component.
+    import App from '/App.js'
+    // import App from '/App.js'
+    const app = createApp(App).mount('#app')
+  </script>
+
 </body>
 </html>

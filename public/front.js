@@ -1,3 +1,4 @@
+
 const req = await fetch('/planes')
 const planes = await req.json()
 let plane
