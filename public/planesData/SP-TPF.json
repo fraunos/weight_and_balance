@@ -1,0 +1,47 @@
+{
+  "callsign": "SP-TPF",
+  "type": "AT3",
+  "units": "kg",
+  "MTOW": 630,
+  "loads": [
+    {
+      "name": "empty",
+      "label": "Samolot pusty",
+      "weight": 390.8,
+      "moment": 103.6,
+      "type": "base"
+    },
+    {
+      "name": "fuel",
+      "label": "Paliwo",
+      "arm": 0.192,
+      "max": 105,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew",
+      "label": "Załoga",
+      "arm": 0.6,
+      "type": "input",
+      "inputCount": 2,
+      "inputType": "number"
+    },
+    {
+      "name": "baggage",
+      "label": "Bagaż",
+      "arm": 1.125,
+      "max": 30,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "towbar",
+      "label": "Dyszel składany",
+      "weight": 1.5,
+      "arm": 1.733,
+      "type": "input",
+      "inputType": "checkbox"
+    }
+  ]  
+}

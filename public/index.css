@@ -1,0 +1,11 @@
+* {
+}
+
+#text {
+  font-family: sans;
+  background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
+  background-clip: text;
+  color: transparent;
+  letter-spacing: .2em;
+  width: 100%;
+}
