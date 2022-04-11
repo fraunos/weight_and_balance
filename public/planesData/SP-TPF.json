@@ -24,7 +24,6 @@
       "label": "Załoga",
       "arm": 0.6,
       "type": "input",
-      "inputCount": 2,
       "inputType": "number"
     },
     {
