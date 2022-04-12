@@ -7,13 +7,15 @@
     {
       "name": "empty",
       "label": "Samolot pusty",
-      "weight": 390.8,
+      "value": 390.8,
       "moment": 103.6,
       "type": "base"
     },
     {
       "name": "fuel",
       "label": "Paliwo",
+      "density": 0.72,
+      "unit": "liter",
       "arm": 0.192,
       "max": 105,
       "type": "input",
@@ -37,7 +39,8 @@
     {
       "name": "towbar",
       "label": "Dyszel składany",
-      "weight": 1.5,
+      "density": 1.5,
+      "value": 0,
       "arm": 1.733,
       "type": "input",
       "inputType": "checkbox"
