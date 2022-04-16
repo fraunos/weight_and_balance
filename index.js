@@ -22,12 +22,6 @@ app.use(koaStatic('public'));
 
 app.use(async ctx => {
   if(ctx.request.URL.pathname === "/planes") {
-    // let {callsign} = ctx.query
-    // if(callsign){
-      // ctx.body = fs.read;
-    // } else {
-      // ctx.body = callsign;
-    // }
     ctx.body = fs.readdirSync('public/planesData');
   }
 });

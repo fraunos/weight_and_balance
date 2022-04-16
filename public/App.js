@@ -1,12 +1,17 @@
+import Chart from '/Chart.js'
+
 export default {
+  components: [
+    Chart
+  ],
   data() {
-    return { 
+    return {
       selectedPlane: "",
       planesList: [],
       planeData: {}
     }
   },
-  async mounted(){
+  async mounted() {
     this.planesList = await requestJSON('/planes')
   },
   methods: {
@@ -14,24 +19,38 @@ export default {
       console.log(ev)
       this.planeData = await requestJSON(ev.target.value)
     },
-    loadWeight({density = 1, value}) {
-      return Math.round(density * value * 10) / 10
+    loadWeight({ density = 1, value }) {
+      return round(density * value)
+    },
+    loadMoment(load) {
+      return round(load.moment || this.loadWeight(load) * load.arm)
+    },
+    sumLoad(fn) {
+      const sum = this.planeData.loads?.map(fn)
+        .filter(i => i)
+        .reduce((acc, cv) => {
+          return cv + acc
+        }, 0)
+      return round(sum)
     }
   },
   computed: {
     totalWeight() {
-      const sum =  this.planeData.loads?.map(i=>({density: i.density ?? 1, value: i.value}))
-        .filter(i=>i.density && i.value)
-        .reduce((acc,cv)=>{
-          return cv.density * cv.value + acc
-      }, 0)
-      return sum
+      return this.sumLoad(this.loadWeight)
+    },
+    totalMoment() {
+      return this.sumLoad(this.loadMoment)
     }
   }
+
 }
 
-async function requestJSON(url){
+async function requestJSON(url) {
   const res = await fetch(url)
   const data = await res.json()
   return data
+}
+
+function round(number){
+  return Math.round(number * 100) / 100
 }

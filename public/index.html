@@ -10,27 +10,44 @@
 </head>
 <body>
   <div id="app">
-    <label for="planes">Samolot:</label>
-    <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
-      <option disabled selected value>wybierz</option>
-      <option v-for="plane in planesList" :value="`/planesData/${plane}`">{{plane.replace(/\.json/,'')}}</option>
-    </select>
-
-    <div id="inputs">
-      <div v-for="load in planeData.loads">
-        <label :for="load.name">{{load.label}} {{load.unit}}</label>
-        <input :type="load.inputType" :max="load.max" v-model="load.value" :name="load.name" />
-        <span>{{loadWeight(load)}} kg</span>
-      </div>
+    <div>
+      <label for="planes">Samolot:</label>
+      <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
+        <option disabled selected value>wybierz</option>
+        <option v-for="plane in planesList" :value="`/planesData/${plane}`">{{plane.replace(/\.json/,'')}}</option>
+      </select>
+    
+      <form id="inputs">
+        <template v-if="selectedPlane">
+          <span></span>
+          <span>Ilość</span>
+          <span>Masa</span>
+          <span>Moment</span>
+        </template>
+        <template v-for="load in planeData.loads">
+          <label :for="load.name">{{load.label}} [{{load.unit}} * {{load.density}}]</label>
+          <input :type="load.inputType" :max="load.max" v-model="load.value" :name="load.name" />
+          <span>{{loadWeight(load) || '0'}} kg</span>
+          <span>{{loadMoment(load) || '0'}}</span>
+        </template>
+        <template v-if="selectedPlane">
+          <span></span>
+          <span></span>
+          <span>{{totalWeight && `${totalWeight} kg`}}</span>
+          <span>{{totalMoment && `${totalMoment}`}}</span>
+        </template>
+      </form>
     </div>
-    {{totalWeight && `${totalWeight} kg`}}
-
+    <chart></chart>
   </div>
 
   <script type="module">
     import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
     import App from '/App.js'
-    const app = createApp(App).mount('#app')
+    import Chart from '/Chart.js'
+    const app = createApp(App)
+    app.component('Chart', Chart)
+    const mountedApp = app.mount('#app')
   </script>
 
 </body>
