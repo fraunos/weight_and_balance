@@ -8,10 +8,6 @@ export default {
     }
   },
   methods: {
-    async getPlaneData(ev) {
-      console.log(ev)
-      this.planeData = await requestJSON(ev.target.value)
-    },
   },
   computed: {
     scale() {
