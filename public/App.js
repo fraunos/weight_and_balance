@@ -6,18 +6,18 @@ export default {
   ],
   data() {
     return {
-      selectedPlane: "",
+      selectedPlane: "SP-TPF.json",
       planesList: [],
-      planeData: {}
+      planeData: false
     }
   },
   async mounted() {
+    this.getPlaneData()
     this.planesList = await requestJSON('/planes')
   },
   methods: {
-    async getPlaneData(ev) {
-      console.log(ev)
-      this.planeData = await requestJSON(ev.target.value)
+    async getPlaneData() {
+      this.planeData = await requestJSON(`/planesData/${this.selectedPlane}`)
     },
     loadWeight({ density = 1, value }) {
       return round(density * value)
@@ -40,6 +40,9 @@ export default {
     },
     totalMoment() {
       return this.sumLoad(this.loadMoment)
+    },
+    cogArm() {
+      return round(this.totalMoment / this.totalWeight)
     }
   }
 
@@ -52,5 +55,5 @@ async function requestJSON(url) {
 }
 
 function round(number){
-  return Math.round(number * 100) / 100
+  return Math.round(number * 1000) / 1000
 }

@@ -6,7 +6,7 @@
 
 #inputs {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, auto);
   gap: 1px;
 }
 
@@ -17,4 +17,19 @@
 
 input {
   font-size: 100%;
+}
+
+#chart svg {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+}
+
+#chart circle, #chart text {
+  stroke: none;
+}
+
+#chart .limits {
+  stroke: red;
+  stroke-width: 4;
 }

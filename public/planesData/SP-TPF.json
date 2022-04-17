@@ -3,13 +3,16 @@
   "type": "AT3",
   "units": "kg",
   "MTOW": 630,
+  "min": 430,
+  "cogArmMin": 0.241,
+  "cogArmMax": 0.394,
   "loads": [
     {
       "name": "empty",
       "label": "Samolot pusty",
       "value": 390.8,
       "moment": 103.6,
-      "type": "base"
+      "inputDisabled": true
     },
     {
       "name": "fuel",

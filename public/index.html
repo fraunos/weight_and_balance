@@ -14,31 +14,48 @@
       <label for="planes">Samolot:</label>
       <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
         <option disabled selected value>wybierz</option>
-        <option v-for="plane in planesList" :value="`/planesData/${plane}`">{{plane.replace(/\.json/,'')}}</option>
+        <option v-for="plane in planesList" :value="plane">{{plane.replace(/\.json/,'')}}</option>
       </select>
     
       <form id="inputs">
-        <template v-if="selectedPlane">
+        <template v-if="planeData">
           <span></span>
           <span>Ilość</span>
           <span>Masa</span>
+          <span>Ramię</span>
           <span>Moment</span>
         </template>
         <template v-for="load in planeData.loads">
-          <label :for="load.name">{{load.label}} [{{load.unit}} * {{load.density}}]</label>
-          <input :type="load.inputType" :max="load.max" v-model="load.value" :name="load.name" />
+          <label :for="load.name">{{load.label}}
+            <template v-if="load.unit">[{{load.unit}} * {{load.density}}]</template>
+          </label>
+          <input
+            :disabled="load.inputDisabled"
+            :type="load.inputType"
+            min="0"
+            :max="load.max"
+            v-model="load.value"
+            :name="load.name"
+            />
           <span>{{loadWeight(load) || '0'}} kg</span>
+          <span>{{load.arm || '-'}}</span>
           <span>{{loadMoment(load) || '0'}}</span>
         </template>
-        <template v-if="selectedPlane">
+        <template v-if="planeData">
           <span></span>
           <span></span>
           <span>{{totalWeight && `${totalWeight} kg`}}</span>
+          <span>{{cogArm && `${cogArm}`}}</span>
           <span>{{totalMoment && `${totalMoment}`}}</span>
         </template>
       </form>
     </div>
-    <chart></chart>
+    <Chart
+      v-if="planeData"
+      :plane-data="planeData"
+      :weight="totalWeight"
+      :cog-arm="cogArm"
+    ></Chart>
   </div>
 
   <script type="module">
