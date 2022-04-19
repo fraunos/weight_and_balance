@@ -8,12 +8,16 @@ export default {
     return {
       selectedPlane: "SP-TPF.json",
       planesList: [],
-      planeData: false
+      planeData: false,
+      currentDate: new Date()
     }
   },
   async mounted() {
     this.getPlaneData()
     this.planesList = await requestJSON('/planes')
+    setInterval(()=>{
+      this.currentDate = new Date()
+    }, 1000)
   },
   methods: {
     async getPlaneData() {
@@ -35,6 +39,7 @@ export default {
     }
   },
   computed: {
+
     totalWeight() {
       return this.sumLoad(this.loadWeight)
     },
@@ -43,6 +48,16 @@ export default {
     },
     cogArm() {
       return round(this.totalMoment / this.totalWeight)
+    },
+    isWeightCorrect(){
+      const {totalWeight, planeData} = this
+      return totalWeight > planeData.minWeight &&
+        totalWeight < planeData.maxWeight
+    },
+    isBalanceCorrect() {
+      const {cogArm, planeData} = this
+      return cogArm > planeData.minCogArm &&
+        cogArm < planeData.maxCogArm
     }
   }
 

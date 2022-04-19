@@ -2,16 +2,16 @@
   "callsign": "SP-TPF",
   "type": "AT3",
   "units": "kg",
-  "maxWeight": 630,
-  "minWeight": 430,
-  "minCogArm": 0.241,
-  "maxCogArm": 0.394,
+  "maxWeight": 582,
+  "minWeight": 409,
+  "minCogArm": 0.203,
+  "maxCogArm": 0.393,
   "loads": [
     {
       "name": "empty",
       "label": "Samolot pusty",
-      "value": 390.8,
-      "moment": 103.6,
+      "value": 393.5,
+      "moment": 98.93,
       "inputDisabled": true
     },
     {
@@ -19,7 +19,7 @@
       "label": "Paliwo",
       "density": 0.72,
       "unit": "liter",
-      "arm": 0.192,
+      "arm": -0.257,
       "max": 105,
       "type": "input",
       "inputType": "number"

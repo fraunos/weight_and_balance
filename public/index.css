@@ -1,7 +1,9 @@
-#app {
+body {
   font-family: sans;
-  display: grid;
-  grid-template-columns: 50% 50%;
+}
+
+header {
+  background: lightgray;
 }
 
 #inputs {
@@ -10,18 +12,22 @@
   gap: 1px;
 }
 
-#inputs > * {
+.gridRow {
+  display: contents;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.gridRow > * {
   outline: 1px solid black;
   padding: .5em;
 }
 
-input {
-  font-size: 100%;
-}
-
 #chart svg {
   fill: none;
-  stroke: black;
+  stroke: lightgray;
   stroke-width: 1;
 }
 
@@ -29,7 +35,29 @@ input {
   stroke: none;
 }
 
+#chart text {
+  font-weight: bold;
+}
+
 #chart .limits {
   stroke: red;
-  stroke-width: 4;
+  stroke-width: 2;
+}
+
+input {
+  font-size: 100%;
+  margin: 0;
+}
+
+@media screen {
+  #calculator {
+    display: grid;
+    grid-template-columns: 60% 40%;
+  }
+}
+
+#chart {
+  padding: 3em;
+}
+@media print {
 }

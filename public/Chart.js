@@ -1,9 +1,10 @@
 export default {
-  props: ['planeData', 'weight', 'cogArm'],
+  props: ['planeData', 'totalWeight', 'totalCogArm', 'isWbCorrect'],
   data() {
     return {
       margin: 100,
-      scaleSize: 50,
+      scaleSize: 10,
+      cogScale: 2000,
       chartSize: 1000
     }
   },
@@ -17,25 +18,21 @@ export default {
       return a
       },
     limits() {
-      let {MTOW, min, cogArmMin, cogArmMax} = this.planeData
+      const {maxWeight, minWeight, minCogArm, maxCogArm} = this.planeData
+      const {cogScale} = this
       return [
-        `M0 -${MTOW} L1000 -${MTOW}`,
-        `M0 -${min} L1000 -${min}`,
-        `M${cogArmMin*1000} -1000 L${cogArmMin*1000} 1000`,
-        `M${cogArmMax*1000} -1000 L${cogArmMax*1000} 1000`
+        `M0 -${maxWeight} L1000 -${maxWeight}`,
+        `M0 -${minWeight} L1000 -${minWeight}`,
+        `M${minCogArm*cogScale} -1000 L${minCogArm*cogScale} 1000`,
+        `M${maxCogArm*cogScale} -1000 L${maxCogArm*cogScale} 1000`
       ]
       },
     viewBox(){
-      let {planeData: pd, margin} = this
-      return `0 -${pd.MTOW+margin} 500 ${pd.MTOW-pd.min+margin*2}`
-      // return `0 -1000 1000 1000`
+      const {planeData: pd, margin, cogScale} = this
+      return `${pd.minCogArm*cogScale-margin} -${pd.maxWeight+margin} ${(pd.maxCogArm-pd.minCogArm)*cogScale+margin*2} ${pd.maxWeight-pd.minWeight+margin*2}`
     },
-    isWBcorrect() {
-      let {planeData: pd, weight, cogArm} = this
-      return weight > pd.min &&
-        weight < pd.MTOW &&
-        cogArm > pd.cogArmMin &&
-        cogArm < pd.cogArmMax
+    textColor(){
+      return this.isWbCorrect ? 'green' : 'red'
     }
   },
   mounted() {
@@ -45,9 +42,9 @@ export default {
     <svg :viewBox="viewBox">
       <path v-for="line in scale" :d="line" />
       <path class="limits" v-for="line in limits" :d="line" />
-      <circle :cx="cogArm*1000" :cy="-weight" r="1%" :fill="isWBcorrect ? 'green' : 'red'" />
-      <text :x="cogArm*1000+20" :y="-weight+20" :fill="isWBcorrect ? 'green' : 'red'" >{{weight}} kg</text>
-      <text :x="cogArm*1000+20" :y="-weight" :fill="isWBcorrect ? 'green' : 'red'" >{{cogArm}}</text>
+      <circle :cx="totalCogArm*cogScale" :cy="-totalWeight" r="1%" :fill="textColor" />
+      <text :x="totalCogArm*cogScale+20" :y="-totalWeight+20" :fill="textColor" >{{totalWeight}} kg</text>
+      <text :x="totalCogArm*cogScale+20" :y="-totalWeight" :fill="textColor" >{{totalCogArm}}</text>
     </svg>
   </div>
   `

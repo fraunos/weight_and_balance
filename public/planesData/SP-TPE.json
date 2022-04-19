@@ -1,5 +1,5 @@
 {
-  "callsign": "SP-TPF",
+  "callsign": "SP-TPE",
   "type": "AT3",
   "units": "kg",
   "maxWeight": 630,
@@ -10,8 +10,8 @@
     {
       "name": "empty",
       "label": "Samolot pusty",
-      "value": 390.8,
-      "moment": 103.6,
+      "value": 398.5,
+      "moment": 104.8,
       "inputDisabled": true
     },
     {
