@@ -6,7 +6,7 @@ export default {
   ],
   data() {
     return {
-      selectedPlane: "SP-TPF.json",
+      selectedPlane: "SP-RAM.json",
       planesList: [],
       planeData: false,
       currentDate: new Date()
@@ -17,10 +17,11 @@ export default {
     this.planesList = await requestJSON('/planes')
     setInterval(()=>{
       this.currentDate = new Date()
-    }, 1000)
+    }, 1000*60)
   },
   methods: {
     async getPlaneData() {
+      this.planeData = false
       this.planeData = await requestJSON(`/planesData/${this.selectedPlane}`)
     },
     loadWeight({ density = 1, value }) {

@@ -2,8 +2,8 @@
   "callsign": "SP-TPF",
   "type": "AT3",
   "units": "kg",
-  "maxWeight": 582,
   "minWeight": 409,
+  "maxWeight": 582,
   "minCogArm": 0.203,
   "maxCogArm": 0.393,
   "loads": [
@@ -15,12 +15,23 @@
       "inputDisabled": true
     },
     {
+      "name": "fuelaux",
+      "label": "Paliwo dodatkowe",
+      "density": 0.72,
+      "unit": "liter",
+      "arm": 0.39,
+      "min": 3.5,
+      "max": 51.5,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
       "name": "fuel",
       "label": "Paliwo",
       "density": 0.72,
       "unit": "liter",
       "arm": -0.257,
-      "max": 105,
+      "max": 68.5,
       "type": "input",
       "inputType": "number"
     },

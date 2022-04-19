@@ -2,8 +2,8 @@
   "callsign": "SP-TPF",
   "type": "AT3",
   "units": "kg",
-  "maxWeight": 630,
   "minWeight": 430,
+  "maxWeight": 630,
   "minCogArm": 0.241,
   "maxCogArm": 0.394,
   "loads": [

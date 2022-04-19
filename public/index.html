@@ -35,8 +35,9 @@
           <input
             :disabled="load.inputDisabled"
             :type="load.inputType"
-            min="0"
+            :min="load.min || 0"
             :max="load.max"
+            step="0.5"
             v-model="load.value"
             :name="load.name"
             size="10"
