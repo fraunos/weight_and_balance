@@ -16,7 +16,7 @@
     },
     {
       "name": "fuel1",
-      "label": "Paliwo dodatkowe",
+      "label": "Paliwo (zbiornik dodatkowy)",
       "density": 0.72,
       "unit": "litr",
       "arm": 0.39,
@@ -26,7 +26,7 @@
     },
     {
       "name": "fuel2",
-      "label": "Paliwo",
+      "label": "Paliwo (zbiornik główny)",
       "density": 0.72,
       "unit": "litr",
       "arm": -0.257,
