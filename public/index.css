@@ -3,7 +3,16 @@ body {
 }
 
 header {
+  display: flex;
   background: lightgray;
+  justify-content: space-evenly;
+}
+
+#logo {
+  flex-grow: 0;
+  flex-shrink: 1;
+  height: 100px;
+  width: auto;
 }
 
 #inputs {
@@ -41,6 +50,11 @@ header {
 
 #chart .limits {
   stroke: red;
+  stroke-width: 2;
+}
+
+#chart .fuelUsage {
+  stroke: purple;
   stroke-width: 2;
 }
 

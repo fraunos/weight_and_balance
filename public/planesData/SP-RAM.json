@@ -15,28 +15,35 @@
       "inputDisabled": true
     },
     {
-      "name": "fuelaux",
+      "name": "fuel1",
       "label": "Paliwo dodatkowe",
       "density": 0.72,
-      "unit": "liter",
+      "unit": "litr",
       "arm": 0.39,
       "max": 51.5,
       "type": "input",
       "inputType": "number"
     },
     {
-      "name": "fuel",
+      "name": "fuel2",
       "label": "Paliwo",
       "density": 0.72,
-      "unit": "liter",
+      "unit": "litr",
       "arm": -0.257,
       "max": 68.5,
       "type": "input",
       "inputType": "number"
     },
     {
-      "name": "crew",
-      "label": "Załoga",
+      "name": "crew1",
+      "label": "Załoga 1",
+      "arm": 0.6,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew2",
+      "label": "Załoga 2",
       "arm": 0.6,
       "type": "input",
       "inputType": "number"

@@ -1,5 +1,5 @@
 export default {
-  props: ['planeData', 'totalWeight', 'totalCogArm', 'isWbCorrect'],
+  props: ['planeData', 'totalWeight', 'totalCogArm', 'isWbCorrect', 'fuelUsage'],
   data() {
     return {
       margin: 100,
@@ -33,6 +33,10 @@ export default {
     },
     textColor(){
       return this.isWbCorrect ? 'green' : 'red'
+    },
+    fuelUsageLine(){
+      const {cogScale} = this
+      return 'M' + this.fuelUsage.map(i=>`${i.cogArm*cogScale} ${-i.totalWeight}`).join(' L')
     }
   },
   mounted() {
@@ -42,6 +46,7 @@ export default {
     <svg :viewBox="viewBox">
       <path v-for="line in scale" :d="line" />
       <path class="limits" v-for="line in limits" :d="line" />
+      <path class="fuelUsage" :d="fuelUsageLine" />
       <circle :cx="totalCogArm*cogScale" :cy="-totalWeight" r="1%" :fill="textColor" />
       <text :x="totalCogArm*cogScale+20" :y="-totalWeight+20" :fill="textColor" >{{totalWeight}} kg</text>
       <text :x="totalCogArm*cogScale+20" :y="-totalWeight" :fill="textColor" >{{totalCogArm}}</text>

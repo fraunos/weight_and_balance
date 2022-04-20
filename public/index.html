@@ -11,13 +11,17 @@
 <body>
   <div id="app">
     <header>
-      <div>{{currentDate}}</div>
-      <div>{{currentDate.toUTCString()}}</div>
-      <label for="planes">Samolot:</label>
-      <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
-        <option disabled selected value>wybierz</option>
-        <option v-for="plane in planesList" :value="plane">{{plane.replace(/\.json/,'')}}</option>
-      </select>
+      <div>
+        <label for="planes">Samolot:</label>
+        <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
+          <option disabled selected value>wybierz</option>
+          <option v-for="plane in planesList" :value="plane">{{plane.replace(/\.json/,'')}}</option>
+        </select>
+      </div>
+      <div>
+        <div>{{currentDate}}</div>
+        <div>{{currentDate.toUTCString()}}</div>
+      </div>
     </header>
     <div id="calculator" >
       <form id="inputs">
@@ -49,9 +53,9 @@
         <div class="gridRow bold" v-if="planeData">
           <span>Suma</span>
           <span></span>
-          <span :style="{color: isWeightCorrect ? 'green' : 'red'}">{{`${totalWeight} kg`}}</span>
-          <span :style="{color: isBalanceCorrect ? 'green' : 'red'}">{{cogArm}}</span>
-          <span>{{totalMoment}}</span>
+          <span :style="{color: isWeightCorrect(planeData) ? 'green' : 'red'}">{{`${totalWeight(planeData.loads)} kg`}}</span>
+          <span :style="{color: isBalanceCorrect(planeData) ? 'green' : 'red'}">{{cogArm(planeData.loads)}}</span>
+          <span>{{totalMoment(planeData.loads)}}</span>
         </div>
         <div class="gridRow bold" v-if="planeData">
           <span>Limity</span>
@@ -64,9 +68,10 @@
       <Chart
         v-if="planeData"
         :plane-data="planeData"
-        :total-weight="totalWeight"
-        :total-cog-arm="cogArm"
-        :is-wb-correct="isWeightCorrect && isBalanceCorrect"
+        :total-weight="totalWeight(planeData.loads)"
+        :total-cog-arm="cogArm(planeData.loads)"
+        :is-wb-correct="isWeightCorrect(planeData) && isBalanceCorrect(planeData)"
+        :fuel-usage="fuelUsage"
       ></Chart>
     </div>
   </div>

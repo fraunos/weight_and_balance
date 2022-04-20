@@ -15,9 +15,9 @@ export default {
   async mounted() {
     this.getPlaneData()
     this.planesList = await requestJSON('/planes')
-    setInterval(()=>{
+    setInterval(() => {
       this.currentDate = new Date()
-    }, 1000*60)
+    }, 1000 * 60)
   },
   methods: {
     async getPlaneData() {
@@ -30,35 +30,58 @@ export default {
     loadMoment(load) {
       return round(load.moment || this.loadWeight(load) * load.arm)
     },
-    sumLoad(fn) {
-      const sum = this.planeData.loads?.map(fn)
+    sumLoad(loads, fn) {
+      const sum = loads?.map(fn)
         .filter(i => i)
         .reduce((acc, cv) => {
           return cv + acc
         }, 0)
       return round(sum)
-    }
+    },
+    totalWeight(loads) {
+      return this.sumLoad(loads, this.loadWeight)
+    },
+    totalMoment(loads) {
+      return this.sumLoad(loads, this.loadMoment)
+    },
+    cogArm(loads) {
+      return round(this.totalMoment(loads) / this.totalWeight(loads))
+    },
+    isWeightCorrect(planeData) {
+      const { totalWeight } = this
+      return totalWeight(planeData.loads) > planeData.minWeight &&
+        totalWeight(planeData.loads) < planeData.maxWeight
+    },
+    isBalanceCorrect(planeData) {
+      const { cogArm } = this
+      return cogArm(planeData.loads) > planeData.minCogArm &&
+        cogArm(planeData.loads) < planeData.maxCogArm
+    },
   },
   computed: {
+    fuelUsage() {
+      if (!this.planeData.loads) return []
+      let x = []
+      const fuelLoads = this.planeData.loads.filter(i => i.name.includes('fuel')).map(i=>i.name)
+      const clonedLoads = JSON.parse(JSON.stringify(this.planeData.loads))
 
-    totalWeight() {
-      return this.sumLoad(this.loadWeight)
-    },
-    totalMoment() {
-      return this.sumLoad(this.loadMoment)
-    },
-    cogArm() {
-      return round(this.totalMoment / this.totalWeight)
-    },
-    isWeightCorrect(){
-      const {totalWeight, planeData} = this
-      return totalWeight > planeData.minWeight &&
-        totalWeight < planeData.maxWeight
-    },
-    isBalanceCorrect() {
-      const {cogArm, planeData} = this
-      return cogArm > planeData.minCogArm &&
-        cogArm < planeData.maxCogArm
+      for (const fuelName of fuelLoads) {
+        clonedLoads.find(i=>i.name===fuelName).value = 0
+      }
+
+      x.push(JSON.parse(JSON.stringify(clonedLoads)))
+      for (const fuelName of fuelLoads) {
+        const load = clonedLoads.find(i=>i.name === fuelName)
+        load.value = load.max
+        x.push(JSON.parse(JSON.stringify(clonedLoads)))
+      }
+
+      return x.map(i=>{
+        return {
+          totalWeight: this.totalWeight(i),
+          cogArm: this.cogArm(i)
+        }
+      })
     }
   }
 
@@ -70,6 +93,6 @@ async function requestJSON(url) {
   return data
 }
 
-function round(number){
+function round(number) {
   return Math.round(number * 1000) / 1000
 }

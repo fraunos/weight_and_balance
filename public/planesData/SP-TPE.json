@@ -25,8 +25,15 @@
       "inputType": "number"
     },
     {
-      "name": "crew",
-      "label": "Załoga",
+      "name": "crew1",
+      "label": "Załoga 1",
+      "arm": 0.6,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew2",
+      "label": "Załoga 2",
       "arm": 0.6,
       "type": "input",
       "inputType": "number"

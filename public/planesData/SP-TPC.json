@@ -11,7 +11,7 @@
       "name": "empty",
       "label": "Samolot pusty",
       "value": 381.5,
-      "moment": 96.71,
+      "moment": 98.93,
       "inputDisabled": true
     },
     {
@@ -25,8 +25,15 @@
       "inputType": "number"
     },
     {
-      "name": "crew",
-      "label": "Załoga",
+      "name": "crew1",
+      "label": "Załoga 1",
+      "arm": 0.6,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew2",
+      "label": "Załoga 2",
       "arm": 0.6,
       "type": "input",
       "inputType": "number"
