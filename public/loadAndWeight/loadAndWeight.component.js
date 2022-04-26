@@ -1,3 +1,10 @@
+import { AWUtilsService } from "../core/utils/utils.service.js";
+import { AWPlanesService } from "../core/services/planes.service.js";
+import { AWLoadAndWeightService } from "./loadAndWeight.service.js";
+
+const awUtilsSvc = new AWUtilsService();
+const awPlanesSvc = new AWPlanesService();
+const loadAndWeightSvc = new AWLoadAndWeightService();
 export default {
     components: [],
     props: ['selected', 'planesList'],
@@ -9,50 +16,41 @@ export default {
         }
     },
     async mounted() {
-        this.getPlaneData()
+        this.getPlaneData();
     },
     methods: {
         async getPlaneData() {
             this.planeData = false
-            this.planeData = await requestJSON(`/planesData/${this.selectedLocal}`)
+            this.planeData = await awPlanesSvc.detailsPlane(this.selectedLocal);
         },
         loadWeight({ density = 1, value }) {
-            return round(density * value)
+            return loadAndWeightSvc.getLoadWeight(density, value);
         },
         loadMoment(load) {
-            return round(load.moment || this.loadWeight(load) * load.arm)
-        },
-        sumLoad(loads, fn) {
-            const sum = loads?.map(fn)
-                .filter(i => i)
-                .reduce((acc, cv) => {
-                    return cv + acc
-                }, 0)
-            return round(sum)
+            return loadAndWeightSvc.getLoadMoment(load);
         },
         totalWeight(loads) {
-            return this.sumLoad(loads, this.loadWeight)
+            return loadAndWeightSvc.getSumLoad(loads, this.loadWeight);
         },
         totalMoment(loads) {
-            return this.sumLoad(loads, this.loadMoment)
+            return loadAndWeightSvc.getSumLoad(loads, this.loadMoment);
         },
         cogArm(loads) {
-            return round(this.totalMoment(loads) / this.totalWeight(loads))
+            return loadAndWeightSvc.getCogArm(this.totalMoment(loads), this.totalWeight(loads));
         },
         isWeightCorrect(planeData) {
             const { totalWeight } = this
             return totalWeight(planeData.loads) > planeData.minWeight &&
-                totalWeight(planeData.loads) < planeData.maxWeight
+                totalWeight(planeData.loads) < planeData.maxWeight;
         },
         isBalanceCorrect(planeData) {
             const { cogArm } = this
             return cogArm(planeData.loads) > planeData.minCogArm &&
-                cogArm(planeData.loads) < planeData.maxCogArm
+                cogArm(planeData.loads) < planeData.maxCogArm;
         },
     },
     watch: {
       selected (oldSelected, newSelected) {
-        console.log('selected', oldSelected, newSelected);
         this.getPlaneData();
       }
     },
@@ -98,7 +96,7 @@ export default {
             })
         }
     },
-    template: vue`
+    template: `
     <div id="calculator" >
       <form id="inputs">
         <div class="gridRow" v-if="planeData">
@@ -151,18 +149,4 @@ export default {
       ></Chart>
     </div>
   `
-}
-
-async function requestJSON(url) {
-    const res = await fetch(url)
-    const data = await res.json()
-    return data
-}
-
-function round(number) {
-    return Math.round(number * 1000) / 1000
-}
-
-function vue(str, exp) {
-    return str.raw[0]
 }

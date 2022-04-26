@@ -6,6 +6,7 @@
   "maxWeight": 582,
   "minCogArm": 0.203,
   "maxCogArm": 0.393,
+  "lastUpdated": "Here should be date of last sync with operation manual available on board",
   "loads": [
     {
       "name": "empty",

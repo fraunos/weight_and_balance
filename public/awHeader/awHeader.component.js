@@ -30,7 +30,7 @@ export default {
       }
     }
   },
-  template: vue`
+  template: `
     <header>
       <div>
         <label for="planes">Samolot:</label>
@@ -45,8 +45,4 @@ export default {
       </div>
     </header>
   `
-}
-
-function vue(str, exp) {
-    return str.raw[0]
 }

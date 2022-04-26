@@ -1,3 +1,7 @@
+import { AWPlanesService } from "./core/services/planes.service.js";
+
+
+const awPlanesService = new AWPlanesService();
 export default {
   components: {},
   data() {
@@ -7,7 +11,7 @@ export default {
     }
   },
   async mounted() {
-    this.planesList = await requestJSON('/planes');
+    this.planesList = await awPlanesService.listPlanes();
   },
   methods: {
     onSelectedChange: function (event) {
@@ -16,10 +20,4 @@ export default {
     }
   },
   computed: {}
-}
-
-async function requestJSON(url) {
-  const res = await fetch(url)
-  const data = await res.json()
-  return data
 }

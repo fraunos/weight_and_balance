@@ -11,6 +11,9 @@
 <body>
   <div id="app">
     <aw-header :selected="selectedPlane" v-model="selectedPlane" :planes-list="planesList" v-on:selected-change="onSelectedChange($event)"></aw-header>
+    <aw-plane-details :selected="selectedPlane">
+      
+    </aw-plane-details>
     <load-and-weight :planes-list="planesList" :selected="selectedPlane" v-model="selectedPlane" v-on:selected-change="onSelectedChange($event)"></load-and-weight>
     <!-- -->
   </div>
@@ -19,3 +22,24 @@
 
 </body>
 </html>
+
+<template id="planeDetails">
+  <table style="width: 50%; border-color: black; border-width: 1px; border-style: solid; background-color: bisque;">
+    <caption style="background-color: gray; color: yellow;">
+      Please carefully verify properties for a plane you have selected. 
+      Especially make sure that update time for plane data within the application match the data provided in operations manual for selected plane.
+    </caption>
+    <tr style="border-width: 1px; border-color: 1px;">
+      <th>
+        Property
+      </th>
+      <th>
+        Value
+      </th>
+    </tr>
+    <tr style="border-width: 1px; border-color: 1px;" v-for="key in keys">
+      <td>{{key}}</td>
+      <td>{{planeDetails[key]}}</td>
+    </tr>
+  </table>
+</template>
