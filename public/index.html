@@ -10,80 +10,12 @@
 </head>
 <body>
   <div id="app">
-    <header>
-      <div>
-        <label for="planes">Samolot:</label>
-        <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
-          <option disabled selected value>wybierz</option>
-          <option v-for="plane in planesList" :value="plane">{{plane.replace(/\.json/,'')}}</option>
-        </select>
-      </div>
-      <div>
-        <div>{{currentDate}}</div>
-        <div>{{currentDate.toUTCString()}}</div>
-      </div>
-    </header>
-    <div id="calculator" >
-      <form id="inputs">
-        <div class="gridRow" v-if="planeData">
-          <span></span>
-          <span>Ilość</span>
-          <span>Masa</span>
-          <span>Ramię</span>
-          <span>Moment</span>
-        </div>
-        <div class="gridRow" v-for="load in planeData.loads">
-          <label :for="load.name">{{load.label}}
-            <template v-if="load.unit">[{{load.unit}} * {{load.density}}]</template>
-          </label>
-          <input
-            :disabled="load.inputDisabled"
-            :type="load.inputType"
-            :min="load.min || 0"
-            :max="load.max"
-            step="0.5"
-            v-model="load.value"
-            :name="load.name"
-            size="10"
-            />
-          <span>{{loadWeight(load) || '0'}} kg</span>
-          <span>{{load.arm || '-'}}</span>
-          <span>{{loadMoment(load) || '0'}}</span>
-        </div>
-        <div class="gridRow bold" v-if="planeData">
-          <span>Suma</span>
-          <span></span>
-          <span :style="{color: isWeightCorrect(planeData) ? 'green' : 'red'}">{{`${totalWeight(planeData.loads)} kg`}}</span>
-          <span :style="{color: isBalanceCorrect(planeData) ? 'green' : 'red'}">{{cogArm(planeData.loads)}}</span>
-          <span>{{totalMoment(planeData.loads)}}</span>
-        </div>
-        <div class="gridRow bold" v-if="planeData">
-          <span>Limity</span>
-          <span></span>
-          <span>{{planeData.minWeight}} - {{planeData.maxWeight}} kg</span>
-          <span>{{planeData.minCogArm}} - {{planeData.maxCogArm}}</span>
-          <span></span>
-        </div>
-      </form>
-      <Chart
-        v-if="planeData"
-        :plane-data="planeData"
-        :total-weight="totalWeight(planeData.loads)"
-        :total-cog-arm="cogArm(planeData.loads)"
-        :is-wb-correct="isWeightCorrect(planeData) && isBalanceCorrect(planeData)"
-        :fuel-usage="fuelUsage"
-      ></Chart>
-    </div>
+    <aw-header :selected="selectedPlane" v-model="selectedPlane" :planes-list="planesList" v-on:selected-change="onSelectedChange($event)"></aw-header>
+    <load-and-weight :planes-list="planesList" :selected="selectedPlane" v-model="selectedPlane" v-on:selected-change="onSelectedChange($event)"></load-and-weight>
+    <!-- -->
   </div>
 
-  <script type="module">
-    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
-    import App from '/App.js'
-    import Chart from '/Chart.js'
-    const app = createApp(App)
-    app.component('Chart', Chart)
-    const mountedApp = app.mount('#app')
-  </script>
+  <script type="module" src="/app.bootstrap.js"></script>
 
 </body>
 </html>
