@@ -11,23 +11,21 @@
 <body>
   <div id="app">
     <header>
-      <div>
-        <label for="planes">Samolot:</label>
-        <select @change="getPlaneData($event)" v-model="selectedPlane" name="planes" id="planes" autocomplete="off">
-          <option disabled selected value>wybierz</option>
-          <option v-for="plane in planesList" :value="plane">{{plane.replace(/\.json/,'')}}</option>
-        </select>
-      </div>
+      <plane-picker
+        @choose-plane="d => planeData = d"
+      ></plane-picker>
       <div>
         <div>{{currentDate}}</div>
         <div>{{currentDate.toUTCString()}}</div>
       </div>
     </header>
     <div id="calculator" >
-      <form id="inputs">
-        <div class="gridRow" v-if="planeData">
+      <form id="inputs" v-if="planeData">
+        <div class="gridRow">
           <span></span>
-          <span>Ilość</span>
+          <span>min - max</span>
+          <span>Ilość SI</span>
+          <span>Ilość Imperial</span>
           <span>Masa</span>
           <span>Ramię</span>
           <span>Moment</span>
@@ -36,43 +34,69 @@
           <label :for="load.name">{{load.label}}
             <template v-if="load.unit">[{{load.unit}} * {{load.density}}]</template>
           </label>
-          <input
-            :disabled="load.inputDisabled"
-            :type="load.inputType"
-            :min="load.min || 0"
-            :max="load.max"
-            step="0.5"
-            v-model="load.value"
-            :name="load.name"
-            size="10"
-            />
-          <span>{{loadWeight(load) || '0'}} kg</span>
-          <span>{{load.arm || '-'}}</span>
-          <span>{{loadMoment(load) || '0'}}</span>
+          <span>{{load.min}} - {{load.max}}</span>
+          <div>
+            <input
+              v-if="displayConversion"
+
+              :disabled="load.inputDisabled"
+              :type="load.inputType"
+              :min="round(load.min * unitConversionsToSI(load.unit).ratio)"
+              :max="round(load.max * unitConversionsToSI(load.unit).ratio)"
+              :step="1"
+              v-model="load.valueSI"
+              @input="load.value = round($event.target.value / unitConversionsToSI(load.unit).ratio)"
+              :name="load.name"
+              size="10"
+              />
+              {{displayConversion ? unitConversionsToSI(load.unit).unit : ''}}
+
+          </div>
+          <div>
+            <input
+              :disabled="load.inputDisabled"
+              :type="load.inputType"
+              :min="load.min || 0"
+              :max="load.max"
+              :step=".5"
+              v-model="load.value"
+              @input="displayConversion ? load.valueSI = round($event.target.value * unitConversionsToSI(load.unit).ratio) : 0"
+              :name="load.name"
+              size="10"
+              />
+              {{load.unit}}
+          </div>
+          <span>{{round(loadWeight(load))}}</span>
+          <span>{{round(load.arm)}}</span>
+          <span>{{round(loadMoment(load))}}</span>
         </div>
         <div class="gridRow bold" v-if="planeData">
           <span>Suma</span>
           <span></span>
-          <span :style="{color: isWeightCorrect(planeData) ? 'green' : 'red'}">{{`${totalWeight(planeData.loads)} kg`}}</span>
-          <span :style="{color: isBalanceCorrect(planeData) ? 'green' : 'red'}">{{cogArm(planeData.loads)}}</span>
-          <span>{{totalMoment(planeData.loads)}}</span>
+          <span></span>
+          <span></span>
+          <span :style="{color: isWeightCorrect(planeData) ? 'green' : 'red'}">{{round(totalWeight(planeData.loads))}} {{planeData.units === 'imperial' ? 'lbs':'kg'}}</span>
+          <span :style="{color: isBalanceCorrect(planeData) ? 'green' : 'red'}">{{round(cogArm(planeData.loads))}}</span>
+          <span>{{round(totalMoment(planeData.loads))}}</span>
         </div>
         <div class="gridRow bold" v-if="planeData">
           <span>Limity</span>
           <span></span>
-          <span>{{planeData.minWeight}} - {{planeData.maxWeight}} kg</span>
+          <span></span>
+          <span></span>
+          <span>{{planeData.minWeight}} - {{planeData.maxWeight}} {{planeData.units === 'imperial' ? 'lbs':'kg'}}</span>
           <span>{{planeData.minCogArm}} - {{planeData.maxCogArm}}</span>
           <span></span>
         </div>
       </form>
-      <Chart
+      <chart
         v-if="planeData"
         :plane-data="planeData"
         :total-weight="totalWeight(planeData.loads)"
         :total-cog-arm="cogArm(planeData.loads)"
         :is-wb-correct="isWeightCorrect(planeData) && isBalanceCorrect(planeData)"
         :fuel-usage="fuelUsage"
-      ></Chart>
+      ></chart>
     </div>
   </div>
 
@@ -80,8 +104,10 @@
     import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
     import App from '/App.js'
     import Chart from '/Chart.js'
+    import PlanePicker from '/PlanePicker.js'
     const app = createApp(App)
     app.component('Chart', Chart)
+    app.component('PlanePicker', PlanePicker)
     const mountedApp = app.mount('#app')
   </script>
 

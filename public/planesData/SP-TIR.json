@@ -1,0 +1,56 @@
+{
+  "callsign": "SP-TIR",
+  "type": "Husky",
+  "units": "imperial",
+  "precision": 100,
+  "minWeight": 1530,
+  "maxWeight": 2000,
+  "minCogArm": 71,
+  "maxCogArm": 80,
+  "loads": [
+    {
+      "name": "empty",
+      "label": "Samolot pusty",
+      "unit": "lbs",
+      "value": 1360,
+      "moment": 99839,
+      "inputDisabled": true
+    },
+    {
+      "name": "fuel1",
+      "label": "Paliwo",
+      "density": 6,
+      "unit": "usgal",
+      "arm": 84,
+      "min": 7.5,
+      "max": 50,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew1",
+      "label": "Załoga 1",
+      "unit": "lbs",
+      "arm": 72.5,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew2",
+      "label": "Załoga 2",
+      "unit": "lbs",
+      "arm": 99,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "baggage",
+      "label": "Bagaż",
+      "unit": "lbs",
+      "arm": 120,
+      "max": 50,
+      "type": "input",
+      "inputType": "number"
+    }
+  ]  
+}

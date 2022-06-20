@@ -1,34 +1,25 @@
-import Chart from '/Chart.js'
-
 export default {
-  components: [
-    Chart
-  ],
   data() {
     return {
-      selectedPlane: "SP-RAM.json",
-      planesList: [],
       planeData: false,
       currentDate: new Date()
     }
   },
   async mounted() {
-    this.getPlaneData()
-    this.planesList = await requestJSON('/planes')
     setInterval(() => {
       this.currentDate = new Date()
     }, 1000 * 60)
   },
   methods: {
-    async getPlaneData() {
-      this.planeData = false
-      this.planeData = await requestJSON(`/planesData/${this.selectedPlane}`)
+    round(number = 0) {
+      const { precision = 1000 } = this.planeData
+      return Math.round(number * precision) / precision
     },
     loadWeight({ density = 1, value }) {
-      return round(density * value)
+      return density * value
     },
     loadMoment(load) {
-      return round(load.moment || this.loadWeight(load) * load.arm)
+      return load.moment || this.loadWeight(load) * load.arm
     },
     sumLoad(loads, fn) {
       const sum = loads?.map(fn)
@@ -36,7 +27,7 @@ export default {
         .reduce((acc, cv) => {
           return cv + acc
         }, 0)
-      return round(sum)
+      return sum
     },
     totalWeight(loads) {
       return this.sumLoad(loads, this.loadWeight)
@@ -45,7 +36,7 @@ export default {
       return this.sumLoad(loads, this.loadMoment)
     },
     cogArm(loads) {
-      return round(this.totalMoment(loads) / this.totalWeight(loads))
+      return this.totalMoment(loads) / this.totalWeight(loads)
     },
     isWeightCorrect(planeData) {
       const { totalWeight } = this
@@ -57,26 +48,47 @@ export default {
       return cogArm(planeData.loads) > planeData.minCogArm &&
         cogArm(planeData.loads) < planeData.maxCogArm
     },
+    unitConversionsToSI(unit) {
+      switch (unit) {
+        case 'usgal':
+          return {
+            unit: 'liter',
+            ratio: 3.785412
+          }
+        case 'lbs':
+          return {
+            unit: 'kg',
+            ratio: 0.45359237
+          }
+      }
+    },
   },
   computed: {
+    displayConversion() {
+      return this.planeData.units === 'imperial'
+    },
     fuelUsage() {
       if (!this.planeData.loads) return []
       let x = []
-      const fuelLoads = this.planeData.loads.filter(i => i.name.includes('fuel')).map(i=>i.name)
+      const fuelLoads = this.planeData.loads.filter(i => i.name.includes('fuel')).map(i => i.name)
       const clonedLoads = JSON.parse(JSON.stringify(this.planeData.loads))
 
       for (const fuelName of fuelLoads) {
-        clonedLoads.find(i=>i.name===fuelName).value = 0
+        clonedLoads.find(i => i.name === fuelName).value = 0
       }
 
       x.push(JSON.parse(JSON.stringify(clonedLoads)))
+
+      const precision = 5
       for (const fuelName of fuelLoads) {
-        const load = clonedLoads.find(i=>i.name === fuelName)
-        load.value = load.max
-        x.push(JSON.parse(JSON.stringify(clonedLoads)))
+        const load = clonedLoads.find(fl => fl.name === fuelName)
+        for (let i = 0; i < precision; i++) {
+          load.value = (i + 1) / precision * load.max
+          x.push(JSON.parse(JSON.stringify(clonedLoads)))
+        }
       }
 
-      return x.map(i=>{
+      return x.map(i => {
         return {
           totalWeight: this.totalWeight(i),
           cogArm: this.cogArm(i)
@@ -87,12 +99,4 @@ export default {
 
 }
 
-async function requestJSON(url) {
-  const res = await fetch(url)
-  const data = await res.json()
-  return data
-}
 
-function round(number) {
-  return Math.round(number * 1000) / 1000
-}

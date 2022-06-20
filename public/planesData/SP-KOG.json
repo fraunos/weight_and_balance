@@ -1,0 +1,54 @@
+{
+  "callsign": "SP-KOG",
+  "type": "Cessna 152",
+  "units": "imperial",
+  "minWeight": 430,
+  "maxWeight": 630,
+  "minCogArm": 0.241,
+  "maxCogArm": 0.394,
+  "loads": [
+    {
+      "name": "empty",
+      "label": "Samolot pusty",
+      "unit": "lbs",
+      "value": 398.5,
+      "moment": 104.8,
+      "inputDisabled": true
+    },
+    {
+      "name": "fuel",
+      "label": "Paliwo",
+      "density": 0.72,
+      "unit": "liter",
+      "arm": 0.192,
+      "max": 100,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew1",
+      "label": "Załoga 1",
+      "unit": "lbs",
+      "arm": 0.6,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "crew2",
+      "label": "Załoga 2",
+      "unit": "lbs",
+      "arm": 0.6,
+      "type": "input",
+      "inputType": "number"
+    },
+    {
+      "name": "baggage",
+      "label": "Bagaż",
+      "unit": "lbs",
+      "arm": 1.125,
+      "max": 30,
+      "type": "input",
+      "inputType": "number"
+    }
+      ]  
+}

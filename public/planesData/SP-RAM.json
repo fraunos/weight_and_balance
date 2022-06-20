@@ -1,7 +1,8 @@
 {
-  "callsign": "SP-TPF",
+  "callsign": "SP-RAM",
   "type": "AT3",
-  "units": "kg",
+  "units": "SI",
+  "precision": 1000,
   "minWeight": 409,
   "maxWeight": 582,
   "minCogArm": 0.203,
@@ -10,15 +11,16 @@
     {
       "name": "empty",
       "label": "Samolot pusty",
+      "unit": "kg",
       "value": 393.5,
       "moment": 98.93,
       "inputDisabled": true
     },
     {
       "name": "fuel1",
-      "label": "Paliwo (zbiornik dodatkowy)",
+      "label": "Paliwo (zbiornik dolny/dodatkowy)",
       "density": 0.72,
-      "unit": "litr",
+      "unit": "liter",
       "arm": 0.39,
       "max": 51.5,
       "type": "input",
@@ -28,7 +30,7 @@
       "name": "fuel2",
       "label": "Paliwo (zbiornik główny)",
       "density": 0.72,
-      "unit": "litr",
+      "unit": "liter",
       "arm": -0.257,
       "max": 68.5,
       "type": "input",
@@ -37,6 +39,7 @@
     {
       "name": "crew1",
       "label": "Załoga 1",
+      "unit": "kg",
       "arm": 0.6,
       "type": "input",
       "inputType": "number"
@@ -44,6 +47,7 @@
     {
       "name": "crew2",
       "label": "Załoga 2",
+      "unit": "kg",
       "arm": 0.6,
       "type": "input",
       "inputType": "number"
@@ -51,6 +55,7 @@
     {
       "name": "baggage",
       "label": "Bagaż",
+      "unit": "kg",
       "arm": 1.125,
       "max": 30,
       "type": "input",

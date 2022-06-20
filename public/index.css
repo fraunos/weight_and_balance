@@ -17,7 +17,7 @@ header {
 
 #inputs {
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(7, 1fr);
   gap: 1px;
 }
 
@@ -45,17 +45,22 @@ header {
 }
 
 #chart text {
+  font-size: 3px;
   font-weight: bold;
 }
 
 #chart .limits {
   stroke: red;
-  stroke-width: 2;
+  stroke-width: 1;
 }
 
 #chart .fuelUsage {
   stroke: purple;
-  stroke-width: 2;
+  stroke-width: .5;
+}
+
+#chart {
+  padding: 3em;
 }
 
 input {
@@ -70,8 +75,5 @@ input {
   }
 }
 
-#chart {
-  padding: 3em;
-}
 @media print {
 }
