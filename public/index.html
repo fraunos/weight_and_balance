@@ -19,9 +19,9 @@
         <div>{{currentDate.toUTCString()}}</div>
       </div>
     </header>
-    <div id="calculator" >
-      <form id="inputs" v-if="planeData">
-        <div class="gridRow">
+    <div id="calculator" v-if="planeData" >
+      <form id="inputs">
+        <div class="gridRow bold background">
           <span></span>
           <span>min - max</span>
           <span>Ilość SI</span>
@@ -32,16 +32,16 @@
         </div>
         <div class="gridRow" v-for="load in planeData.loads">
           <label :for="load.name">{{load.label}}
-            <template v-if="load.unit">[{{load.unit}} * {{load.density}}]</template>
+            <template v-if="load.density">[{{load.unit}} * {{load.density}}]</template>
           </label>
-          <span>{{load.min}} - {{load.max}}</span>
+          <span>{{load.min || 0}} - {{load.max}}</span>
           <div>
             <input
               v-if="displayConversion"
 
               :disabled="load.inputDisabled"
               :type="load.inputType"
-              :min="round(load.min * unitConversionsToSI(load.unit).ratio)"
+              :min="round(load.min * unitConversionsToSI(load.unit).ratio) || 0"
               :max="round(load.max * unitConversionsToSI(load.unit).ratio)"
               :step="1"
               v-model="load.valueSI"
@@ -70,16 +70,16 @@
           <span>{{round(load.arm)}}</span>
           <span>{{round(loadMoment(load))}}</span>
         </div>
-        <div class="gridRow bold" v-if="planeData">
+        <div class="gridRow bold background">
           <span>Suma</span>
           <span></span>
           <span></span>
           <span></span>
-          <span :style="{color: isWeightCorrect(planeData) ? 'green' : 'red'}">{{round(totalWeight(planeData.loads))}} {{planeData.units === 'imperial' ? 'lbs':'kg'}}</span>
-          <span :style="{color: isBalanceCorrect(planeData) ? 'green' : 'red'}">{{round(cogArm(planeData.loads))}}</span>
+          <span :style="{color: isWeightCorrect() ? 'green' : 'red'}">{{round(totalWeight(planeData.loads))}} {{planeData.units === 'imperial' ? 'lbs':'kg'}}</span>
+          <span :style="{color: isBalanceCorrect() ? 'green' : 'red'}">{{round(cogArm(planeData.loads))}}</span>
           <span>{{round(totalMoment(planeData.loads))}}</span>
         </div>
-        <div class="gridRow bold" v-if="planeData">
+        <div class="gridRow bold background">
           <span>Limity</span>
           <span></span>
           <span></span>
@@ -90,13 +90,16 @@
         </div>
       </form>
       <chart
-        v-if="planeData"
         :plane-data="planeData"
         :total-weight="totalWeight(planeData.loads)"
         :total-cog-arm="cogArm(planeData.loads)"
-        :is-wb-correct="isWeightCorrect(planeData) && isBalanceCorrect(planeData)"
+        :is-wb-correct="isWeightCorrect() && isBalanceCorrect()"
         :fuel-usage="fuelUsage"
       ></chart>
+    </div>
+    <div id="summary" class="bold">
+      <div :style="{color: isWeightCorrect() ? 'green' : 'red'}">{{isWeightCorrect() ? '✔️ Masa poprawna' : '❌ Masa przekracza limity'}}</div>
+      <div :style="{color: isBalanceCorrect() ? 'green' : 'red'}">{{isBalanceCorrect() ? '✔️ Wyważenie prawidłowe' : '❌ Wyważenie nieprawidłowe'}}</div>
     </div>
   </div>
 

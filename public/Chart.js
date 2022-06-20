@@ -2,7 +2,7 @@ export default {
   props: ['planeData', 'totalWeight', 'totalCogArm', 'isWbCorrect', 'fuelUsage'],
   data() {
     return {
-      margin: 10,
+      margin: 5,
       chartSize: 100,
       scaleSize: 5
     }
@@ -54,8 +54,8 @@ export default {
     console.log(this.totalCogArm)
   },
   template: vue`
-  <div id="chart">
-    <svg :viewBox="viewBox">
+  <div >
+    <svg id="chart" :viewBox="viewBox">
       <path v-for="line in scale" :d="line" />
       <path class="limits" v-for="line in limits" :d="line" />
       <path class="fuelUsage" :d="fuelUsageLine" />

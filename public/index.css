@@ -2,6 +2,17 @@ body {
   font-family: sans;
 }
 
+#calculator {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+#calculator > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 header {
   display: flex;
   background: lightgray;
@@ -34,7 +45,12 @@ header {
   padding: .5em;
 }
 
-#chart svg {
+.background > * {
+  background: #eee;
+}
+
+svg#chart {
+  max-height: 50vh;
   fill: none;
   stroke: lightgray;
   stroke-width: 1;
@@ -59,21 +75,39 @@ header {
   stroke-width: .5;
 }
 
-#chart {
-  padding: 3em;
-}
-
 input {
   font-size: 100%;
   margin: 0;
+  font-weight: bold;
+}
+
+input:out-of-range {
+  background: #e00;
+  color: white;
+}
+
+#summary{
+  padding: 1em;
+  font-size: 120%;
+  display: flex;
+  gap: 2em;
+  justify-content: center;
 }
 
 @media screen {
   #calculator {
-    display: grid;
     grid-template-columns: 60% 40%;
+  }
+  body {
+    font-size: 15px;
   }
 }
 
 @media print {
+  #calculator {
+    grid-template-rows: 50% 50%;
+  }
+  body {
+    font-size: 12px;
+  }
 }

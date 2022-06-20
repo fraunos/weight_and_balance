@@ -38,15 +38,15 @@ export default {
     cogArm(loads) {
       return this.totalMoment(loads) / this.totalWeight(loads)
     },
-    isWeightCorrect(planeData) {
-      const { totalWeight } = this
-      return totalWeight(planeData.loads) > planeData.minWeight &&
-        totalWeight(planeData.loads) < planeData.maxWeight
+    isWeightCorrect() {
+      const { loads, minWeight, maxWeight } = this.planeData
+      return this.totalWeight(loads) > minWeight &&
+        this.totalWeight(loads) < maxWeight
     },
-    isBalanceCorrect(planeData) {
-      const { cogArm } = this
-      return cogArm(planeData.loads) > planeData.minCogArm &&
-        cogArm(planeData.loads) < planeData.maxCogArm
+    isBalanceCorrect() {
+      const { loads, minCogArm, maxCogArm } = this.planeData
+      return this.cogArm(loads) > minCogArm &&
+        this.cogArm(loads) < maxCogArm
     },
     unitConversionsToSI(unit) {
       switch (unit) {
