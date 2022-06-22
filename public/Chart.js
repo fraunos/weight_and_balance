@@ -2,7 +2,7 @@ export default {
   props: ['planeData', 'totalWeight', 'totalCogArm', 'isWbCorrect', 'fuelUsage'],
   data() {
     return {
-      margin: 5,
+      margin: 20,
       chartSize: 100,
       scaleSize: 5
     }
